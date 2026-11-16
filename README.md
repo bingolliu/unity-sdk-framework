@@ -164,7 +164,8 @@ void Start()
 以下渠道方保密文件不纳入本仓库（已在 `.gitignore` 中排除），克隆后需自行向渠道方获取并放回原位，否则 WebGL 的 4399 / QQ 空间渠道无法构建：
 
 ```text
-SDKConfig/Webgl_All/template/js/4399/4399SDK.js
-SDKConfig/Webgl_All/template/js/4399/4399SDKHelper.js
+SDKConfig/Webgl_All/template/js/4399/            # 整个目录（4399SDK.js / 4399SDKHelper.js / jquery.min.js）
 SDKConfig/Webgl_All/template/js/qqZone/qqZoneSDKHelper.js
 ```
+
+> 运行时 `dynamic_loader.js` 会加载 `js/4399/4399SDKHelper.js` 与 `js/qqZone/qqZoneSDKHelper.js`，缺失时这两个渠道报 404，其余平台不受影响。

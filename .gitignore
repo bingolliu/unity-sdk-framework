@@ -15,8 +15,7 @@
 /ProjectSettings/SDKConfigSync.manifest
 
 # 渠道方保密代码：不纳入公开仓库，需自行向渠道方获取后放回
-/SDKConfig/Webgl_All/template/js/4399/4399SDK.js
-/SDKConfig/Webgl_All/template/js/4399/4399SDKHelper.js
+/SDKConfig/Webgl_All/template/js/4399/
 /SDKConfig/Webgl_All/template/js/qqZone/qqZoneSDKHelper.js
 
 # ===== IDE / 工具缓存 =====
