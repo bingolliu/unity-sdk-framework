@@ -1,0 +1,75 @@
+# ===== Unity 自动生成的缓存 / 构建产物（绝对不要提交）=====
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Bb]uild/
+/[Bb]uilds/
+/[Ll]ogs/
+/[Mm]emoryCaptures/
+/[Rr]ecordings/
+/[Uu]ser[Ss]ettings/
+
+# 本项目自有的导出目录（PC 包 + APK，约 92 MB）
+/output/
+
+# SDKConfig 同步状态记录（每台机器各自生成，不应提交）
+/ProjectSettings/SDKConfigSync.manifest
+
+# 渠道方保密代码：不纳入公开仓库，需自行向渠道方获取后放回
+/SDKConfig/Webgl_All/template/js/4399/4399SDK.js
+/SDKConfig/Webgl_All/template/js/4399/4399SDKHelper.js
+/SDKConfig/Webgl_All/template/js/qqZone/qqZoneSDKHelper.js
+
+# ===== IDE / 工具缓存 =====
+.vs/
+.gradle/
+.idea/
+.vscode/
+ExportedObj/
+.consulo/
+
+# Unity 自动生成的 VS/Rider 工程文件
+*.csproj
+*.unityproj
+*.sln
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+
+# ===== Unity 资源 meta 规则 =====
+# 资源本身的 .meta 必须提交；只有被忽略的资源，其 .meta 才忽略
+!/[Aa]ssets/**/*.meta
+
+# 自动生成的 meta
+*.pidb.meta
+*.pdb.meta
+*.mdb.meta
+
+# ===== 崩溃 / 日志 =====
+sysinfo.txt
+crashlytics-build.properties
+*.stackdump
+
+# ===== 打包产物 =====
+*.apk
+*.aab
+*.unitypackage
+*.app
+
+# ===== Addressables / Android 生成内容 =====
+/[Aa]ssets/[Aa]ddressable[Aa]ssets[Dd]ata/*/*.bin*
+/[Aa]ssets/[Ss]treamingAssets/aa.meta
+/[Aa]ssets/[Ss]treamingAssets/aa/*
+
+# ===== 系统文件 =====
+.DS_Store
+Thumbs.db
+desktop.ini

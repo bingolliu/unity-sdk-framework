@@ -1,0 +1,25 @@
+{
+  "libs": [
+    "libz.tbd",
+    "libc++.tbd",
+    "libsqlite3.tbd"
+  ],
+  "frameworks": [
+    "Foundation.framework",
+    "UIKit.framework",
+    "StoreKit.framework",
+    "SystemConfiguration.framework",
+    "CoreTelephony.framework",
+    "AdSupport.framework",
+    "JavaScriptCore.framework",
+    "CoreMotion.framework",
+    "MobileCoreServices.framework"
+  ],
+  "compiler_flags": [],
+  "linker_flags": [ "-ObjC", "-lc++", "-licucore" ],
+  "plist": "Info.plist",
+  "build_setting": {
+    "CLANG_ENABLE_OBJC_WEAK": "YES",
+    "GCC_C_LANGUAGE_STANDARD": "gnu99"
+  }
+}

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+    iOS 配置文件模板。
+
+    使用方式：接入渠道时复制本文件，替换 CFBundleDisplayName / CFBundleIdentifier /
+    ProductIDs / SubChannelID / URL Scheme，以及渠道要求追加的 key
+    （如 QQ、微信登录需要的 LSApplicationQueriesSchemes）。
+-->
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>en</string>
+	<key>CFBundleDisplayName</key>
+	<string>$(PRODUCT_NAME)</string>
+	<key>CFBundleExecutable</key>
+	<string>$(EXECUTABLE_NAME)</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.defComp.game.$(PRODUCT_NAME:rfc1034identifier)</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>$(PRODUCT_NAME)</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>1.0</string>
+	<key>CFBundleVersion</key>
+	<string>1</string>
+	<key>LSRequiresIPhoneOS</key>
+	<true/>
+	<key>UIRequiredDeviceCapabilities</key>
+	<array>
+		<string>arm64</string>
+	</array>
+	<key>UIRequiresPersistentWiFi</key>
+	<false/>
+	<key>UIRequiresFullScreen</key>
+	<true/>
+	<key>UIStatusBarHidden</key>
+	<true/>
+	<key>UIStatusBarStyle</key>
+	<string>UIStatusBarStyleDefault</string>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<false/>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>Unity_LoadingActivityIndicatorStyle</key>
+	<integer>-1</integer>
+
+	<!-- 渠道配置：子渠道号，CommonIOSSdkHelper.getSubChannelId 从这里读取 -->
+	<key>SubChannelID</key>
+	<string>0</string>
+
+	<!-- 渠道内购商品：key 为游戏侧 itemId，value 为 App Store 商品 ID -->
+	<key>ProductIDs</key>
+	<dict>
+		<key>1</key>
+		<string>com.defComp.game.product1</string>
+		<key>2</key>
+		<string>com.defComp.game.product2</string>
+		<key>3</key>
+		<string>com.defComp.game.product3</string>
+	</dict>
+
+	<!-- 渠道登录回调用的 URL Scheme -->
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>com.defComp.game</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.defComp.game</string>
+			</array>
+		</dict>
+	</array>
+
+	<!-- 渠道 SDK 多为 http 隐私协议 / 上报地址，按渠道要求保留或收紧 -->
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
+
+	<!-- 权限文案，未使用的键可以删除 -->
+	<key>NSMicrophoneUsageDescription</key>
+	<string>需要访问麦克风以使用语音功能</string>
+	<key>NSCameraUsageDescription</key>
+	<string>需要访问相机以使用拍照功能</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>需要访问相册以选择图片</string>
+	<key>NSUserTrackingUsageDescription</key>
+	<string>用于向您提供更准确的广告服务</string>
+</dict>
+</plist>
