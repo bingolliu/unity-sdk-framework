@@ -9,8 +9,7 @@
 /[Rr]ecordings/
 /[Uu]ser[Ss]ettings/
 
-# 本项目自有的导出目录（PC 包 + APK，约 92 MB）
-/output/
+# 注意：/output/ 下的可测试构建包需要纳入版本库，故不在此忽略
 
 # SDKConfig 同步状态记录（每台机器各自生成，不应提交）
 /ProjectSettings/SDKConfigSync.manifest
@@ -63,6 +62,10 @@ crashlytics-build.properties
 *.aab
 *.unitypackage
 *.app
+
+# 例外：output/ 下已编译的可测试包需要纳入版本库（见 output/README.md）
+!/output/
+!/output/**
 
 # ===== Addressables / Android 生成内容 =====
 /[Aa]ssets/[Aa]ddressable[Aa]ssets[Dd]ata/*/*.bin*

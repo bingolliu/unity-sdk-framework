@@ -121,7 +121,7 @@ void Start()
 1. 用 Unity 2022.3.62f2 打开工程。
 2. **File → Build Settings** 选择目标平台并 Switch Platform（会自动同步该平台配置）。
 3. 打包前确认 **Tools → SDKConfig → 打包前自动同步** 已勾选。
-4. Build。产物输出到 `output/`（该目录不纳入版本库）。
+4. Build。产物输出到 `output/`，其中**已编译好的可测试包会纳入版本库**（见 [output/README.md](output/README.md)）。
 
 各平台前置条件：
 
@@ -134,12 +134,23 @@ void Start()
 
 打开 `Assets/Scenes/SDKTest.unity`，运行后即可使用自测面板：左侧为各接口按钮，右侧实时显示回调 JSON 与调用日志。打真机包后使用同一面板即可验证渠道接入。
 
+### 免打包直接体验
+
+仓库内已附编译好的可测试包，无需配置 Unity/iOS/Android 环境：
+
+| 平台 | 文件 | 用法 |
+|---|---|---|
+| Android | `output/and/sdk.apk`（22 MB） | `adb install -r output/and/sdk.apk` |
+| Windows | `output/pc/SDK.exe` | 双击运行（需整个 `pc/` 目录） |
+
+包内为默认桥接实现，回调为模拟数据，仅供联调，详见 [output/README.md](output/README.md)。
+
 ## 版本库约定
 
 `.gitignore` 已排除 Unity 自动生成的内容，克隆后用 Unity 打开会自动重建：
 
-- 忽略：`Library/`、`Temp/`、`Logs/`、`obj/`、`UserSettings/`、`output/`、`.vs/`、`*.csproj`、`*.sln`、`*.apk` 等
-- 提交：`Assets/`（**含 `.meta`**）、`Packages/`、`ProjectSettings/`、`SDKConfig/`
+- 忽略：`Library/`、`Temp/`、`Logs/`、`obj/`、`UserSettings/`、`.vs/`、`*.csproj`、`*.sln`、`*.apk`（`output/` 除外）等
+- 提交：`Assets/`（**含 `.meta`**）、`Packages/`、`ProjectSettings/`、`SDKConfig/`、`output/`（可测试构建包）
 
 > 注意：`Assets/**` 的 `.meta` 文件必须一并提交，否则场景与资源引用会全部丢失。
 
