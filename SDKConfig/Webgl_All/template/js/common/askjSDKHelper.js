@@ -1,3 +1,6 @@
+// WebGL 渠道桥接模板：接入新渠道时按本文件重写 SDKHelper.* 的方法。
+// jslib（Webgl_All.jslib）负责调用这些方法；日志走 window.SendSdkLog，回调走 unityInstance.SendMessage。
+
 var SDKHelper = SDKHelper || {};
 
 // 打日志：优先走 jslib 暴露的 SendSdkLog（会显示在 Unity 的 SDKTestPanel 上），否则只输出到浏览器控制台

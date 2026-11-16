@@ -40,8 +40,11 @@ Assets/
 
 SDKConfig/                         # 渠道配置模板（版本库内维护，按平台分目录）
 ├─ Android/                        # AndroidManifest.xml、mainTemplate.gradle、Java 源码、libs
+│                                  # 新渠道实现入口：com/defComp/game/sdk/CommonSdkHelper.java
 ├─ iOS/                            # Info.plist、setting.json、ObjC 桥接源码
+│                                  # 新渠道实现入口：plugins/CommonIOSSdkHelper.m
 └─ Webgl_All/                      # jslib、WebGL 模板（index.html、样式、JS 桥接）
+                                   # 新渠道实现入口：template/js/common/askjSDKHelper.js
 ```
 
 ## 架构
@@ -86,9 +89,49 @@ void Start()
 
 ### 实现新渠道
 
+**只有新增“平台”时才需要动 C# 的 `SDKParent`。** 在已有平台上接新渠道时，C# 层（`SDKHelper`、`AndroidSDKParent`、`IOSSDKParent`、`WebGLSDKParent`）一律不改，渠道实现全部落在 `SDKConfig/` 对应的原生模板里。
+
+| 场景 | 需要改的地方 | 改 C# |
+|---|---|---|
+| 新增平台（全新 OS / 端） | 新建 `XXXSDKParent : SDKParent`，在 `SDKHelper.Awake()` 增加平台宏分支 | 是 |
+| PC 新渠道 | 新建 `XXXPCSDKParent : PCSDKParent` 重写方法，在 `Awake()` 的 `UNITY_STANDALONE` 分支挂载 | 是（PC 端调用本身就是 C#） |
+| Android 新渠道 | `SDKConfig/Android/.../CommonSdkHelper.java`，按需补 Manifest / gradle / libs | 否 |
+| iOS 新渠道 | `SDKConfig/iOS/plugins/CommonIOSSdkHelper.m`，按需补 Info.plist / setting.json | 否 |
+| WebGL 新渠道 | `SDKConfig/Webgl_All/template/js/common/askjSDKHelper.js`，按需补 `dynamic_loader.js` | 否 |
+
+#### 新增平台：继承 `SDKParent`
+
 1. 在 `Assets/Scripts/SDK/SdkHelper/` 下新建 `XXXSDKParent : SDKParent`，按需 `override` 接口。
-2. 在 `SDKHelper.Awake()` 的对应平台宏分支里替换为 `XXXSDKParent`。
-3. 把渠道配置放到 `SDKConfig/` 对应目录，并在 `SDKConfigImporter` 的 `Rules` 中补充拷贝规则。
+2. 在 `SDKHelper.Awake()` 中增加该平台的宏分支，`AddComponent<XXXSDKParent>()`；未匹配到任何分支时会兜底挂 `CommonSDKHelper`。
+3. 该平台如果需要原生桥接（Java / ObjC / JS），参照同目录现有实现补一层，并保持方法名、参数、返回值与 C# 侧一致。
+
+#### PC 新渠道：继承 `PCSDKParent`
+
+PC 端没有 Java / ObjC / JS 桥接层，SDK 调用直接走 C#：
+
+1. 新建 `XXXPCSDKParent : PCSDKParent`，重写该渠道需要的接口（`Login`、`LogOut`、`Pay`、`SubmitExtraData`、`GetUserId` 等）。
+2. 把 `SDKHelper.Awake()` 里 `#elif UNITY_STANDALONE` 分支的 `AddComponent<PCSDKParent>()` 换成 `AddComponent<XXXPCSDKParent>()`。
+3. 渠道的动态库 / 资源直接放进 `Assets/Plugins`，由 Unity 加载。
+
+#### Android 新渠道：改 Java 模板
+
+1. 按 `SDKConfig/Android` 现有模板补齐渠道需要的配置：`AndroidManifest.xml`（权限 / activity / meta-data）、`mainTemplate.gradle`（依赖）、`libs/<abi>`（jar / so）。
+2. 在 `SDKConfig/Android/com/defComp/game/sdk/CommonSdkHelper.java` 中重写 `IBaseSdkHelper` 的接口方法，按文件里的 TODO 调渠道 SDK，结果统一用 `sendMessage(MSG_*, content)` 回传（消息格式 `cmd::content`）。`MainActivity.InitSdk()` 默认就是 `new CommonSdkHelper()`，桥接层无需改动。
+3. 只有需要同时保留多套渠道实现时，才复制为 `{渠道名}SdkHelper.java`，并且只改 `MainActivity.InitSdk()` 一行。
+
+#### iOS 新渠道：改 ObjC 模板
+
+1. 按 `SDKConfig/iOS` 模板补齐配置：`Info.plist` 与 `setting.json`（`libs` / `frameworks` / `linker_flags` / `compiler_flags` / `build_setting`）。
+2. 在 `SDKConfig/iOS/plugins/CommonIOSSdkHelper.m` 中重写 `IOSSdkHelper` 的接口方法，结果统一用 `SendSdkMessage(@"cmd::content")` 回传。`IOSSdkAppController.mm` 的 `createSdkHelper` 默认返回该实现，无需改动。
+3. 只有需要同时保留多套渠道实现时，才复制 `.h` / `.m` 为新类，并且只改 `createSdkHelper` 的返回值。
+
+#### WebGL 新渠道：改 JS 模板
+
+1. `SDKConfig/Webgl_All/template/js/common/askjSDKHelper.js` 是 `SDKHelper.*` 的接口模板，新渠道按它重写对应方法（`InitializeSdk`、`SDKPay`、`SDKReqCommonMsg`、`SDKSubmitData`、`SDKGetSubChannelID` 等），日志走 `window.SendSdkLog`，回调走 `unityInstance.SendMessage`。
+2. `SDKConfig/Webgl_All/SdkConfig/Webgl_All.jslib` 是 C# ↔ JS 的固定桥接层，接新渠道不用改。
+3. 渠道要求独立 JS 文件时（如现有 4399 / QQ 空间），把实现放到 `template/js/<渠道目录>/<渠道>SDKHelper.js`，并在 `template/dynamic_loader.js` 的 `mPlatformTag` switch 中补一个 case；默认分支加载的是 `js/askj/askjSDKHelper.js`。
+
+> `SDKConfigImporter` 的 `Rules` 是**按目录整体同步**（`Android/com`、`Android/libs`、`iOS/plugins`、`Webgl_All/template` 等），文件放进这些目录即可自动同步；只有新增了规则目录以外的路径，才需要补 `Rules`。
 
 ## 渠道配置（SDKConfig）
 

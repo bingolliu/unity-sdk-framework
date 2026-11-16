@@ -13,10 +13,13 @@ import org.json.JSONException;
 /**
  * 未接入渠道 SDK 时的默认实现，同时作为接入新渠道的模板。
  *
- * 接入步骤：
- *   1. 复制本文件，改名为 {渠道名}SdkHelper；
- *   2. 按方法上的 TODO 调用渠道 SDK，并把结果通过 sendMessage(...) 回传给 Unity；
- *   3. 在 MainActivity.InitSdk() 中把 new CommonSdkHelper() 换成新的实现。
+ * 接入步骤（不需要改 C# / MainActivity）：
+ *   1. 直接在本文件里重写 IBaseSdkHelper 的接口方法，按方法上的 TODO 调用渠道 SDK；
+ *   2. 结果通过 sendMessage(MSG_*, content) 回传给 Unity；
+ *   3. MainActivity.InitSdk() 默认就是 new CommonSdkHelper()，无需改动。
+ *
+ * 若同一工程需要同时保留多套渠道实现，再复制本文件改名为 {渠道名}SdkHelper，
+ * 并在 MainActivity.InitSdk() 中选择要使用的实现。
  */
 public class CommonSdkHelper implements IBaseSdkHelper
 {

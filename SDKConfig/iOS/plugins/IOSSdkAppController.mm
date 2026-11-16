@@ -11,8 +11,8 @@
  *   渠道 SDK --回调--> IOSSdkHelper 实现 --SendSdkMessage--> C# SDKHelper.OnMessage
  *
  * 接入新渠道时只需要：
- *   1. 新建渠道实现（参考 CommonIOSSdkHelper）；
- *   2. 改下面的 createSdkHelper 返回渠道实现；
+ *   1. 在 CommonIOSSdkHelper 里重写 IOSSdkHelper 的接口方法（createSdkHelper 默认返回它）；
+ *   2. 渠道需要并存多套实现时，才新建渠道实现并改下面的 createSdkHelper 返回值；
  *   3. 本文件可整体复制并改名，注意同时修改 IMPL_APP_CONTROLLER_SUBCLASS。
  *
  * 注意：本文件中的 C 函数名 / 参数 / 返回值必须与 Assets/Scripts/SDK/SdkHelper/IOSSDKParent.cs

@@ -28,9 +28,9 @@ import java.util.concurrent.TimeUnit;
  *       Assets/Scripts/SDK/SdkHelper/AndroidSDKParent.cs 中的调用保持一致。
  *
  * 接入新渠道的步骤：
- *   1. 复制 com.defComp.game.sdk.CommonSdkHelper，改名为渠道 Helper，按 TODO 填充；
- *   2. 把 InitSdk() 里的 new CommonSdkHelper() 换成渠道 Helper；
- *   3. 按渠道要求补充 AndroidManifest.xml 的权限 / activity / meta-data 以及 libs 下的 jar。
+ *   1. 在 com.defComp.game.sdk.CommonSdkHelper 里重写渠道接口方法（默认实现已由 InitSdk() 实例化）；
+ *   2. 按渠道要求补充 AndroidManifest.xml 的权限 / activity / meta-data 以及 libs 下的 jar / so；
+ *   3. 需要同时保留多套渠道实现时，才复制 CommonSdkHelper 为新 Helper，并只改 InitSdk() 的实例化。
  */
 public class MainActivity extends UnityPlayerActivity
 {

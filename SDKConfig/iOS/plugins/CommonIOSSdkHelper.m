@@ -3,9 +3,11 @@
 
 /**
  * 默认实现（全部空实现），接入新渠道时：
- *   1. 复制本文件与 CommonIOSSdkHelper.h，改名为 {渠道名}SdkHelper；
- *   2. 按方法上的 TODO 调用渠道 SDK；
- *   3. 在 IOSSdkAppController 的 createSdkHelper 中换成新实现。
+ *   1. 直接在本文件里重写 IOSSdkHelper 的接口方法，按方法上的 TODO 调用渠道 SDK；
+ *   2. 结果通过 SendSdkMessage(@"cmd::content") 回传给 Unity；
+ *   3. IOSSdkAppController 的 createSdkHelper 默认返回本实现，无需改动。
+ *
+ * 若同一工程需要同时保留多套渠道实现，再复制 .h / .m 为新类，并只改 createSdkHelper 的返回值。
  */
 @implementation CommonIOSSdkHelper
 
